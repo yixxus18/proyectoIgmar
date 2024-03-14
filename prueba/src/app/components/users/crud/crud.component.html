@@ -1,0 +1,58 @@
+<div class="container" style="text-align: center;">
+    <h1> Usuarios </h1>
+</div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Email</th>
+        <th scope="col">Activo </th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{user.is_active}}</td>
+        <td>
+            <button class="btn btn-primary" *ngIf="rolUsuario === 1 || rolUsuario === 3" (click)="editUser(user)" data-bs-toggle="modal" data-bs-target="#exampleModal1">Editar</button>
+            <button class="btn btn-danger" *ngIf="rolUsuario === 1" (click)="confirmDeleteUser(user.id)">Eliminar</button>
+        </td>          
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="btn btn-success"  data-bs-toggle="modal" data-bs-target="#exampleModal" *ngIf="rolUsuario === 1">Agregar Usuario</button>
+
+  
+  <div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Agregar usuario</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="adduser()"></button>
+        </div>
+        <div class="modal-body">
+          <app-agregarusers></app-agregarusers>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="exampleModal1" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Editar usuario</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="adduser()"></button>
+        </div>
+        <div class="modal-body">
+          <app-edit></app-edit>
+        </div>
+      </div>
+    </div>
+  </div>
+  
