@@ -1,10 +1,29 @@
 <div class="container text-center">
-    <h1 class="my-4">Categorias</h1>
-    <div *ngFor="let category of categories" class="my-2">
-        {{ category.id }} - {{ category.tipo_categoria }}
-        <button class="btn btn-primary mx-2" (click)="editCategory(category)" *ngIf="rolUsuario === 1 || rolUsuario === 3">Editar</button>
-        <button class="btn btn-danger" (click)="deleteCategory(category.id)" *ngIf="rolUsuario === 1 ">Eliminar</button>
-    </div>
+    <div class="container">
+        <h1 class="my-4 text-center">Categorías</h1>
+        <div *ngIf="categories && categories.length > 0" class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tipo de Categoría</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let category of categories">
+                <td>{{ category.id }}</td>
+                <td>{{ category.tipo_categoria }}</td>
+                <td>
+                  <button class="btn btn-primary mx-2" (click)="editCategory(category)" *ngIf="rolUsuario === 1 || rolUsuario === 3">Editar</button>
+                  <button class="btn btn-danger" (click)="deleteCategory(category.id)" *ngIf="rolUsuario === 1">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!(categories && categories.length > 0)" class="alert alert-info">No hay categorías para mostrar.</div>
+      </div>      
     <hr>
     <form *ngIf="tempCategory; else addCategoryForm " (submit)="updateCategory()" class="container" >
         <div class="form-group">
