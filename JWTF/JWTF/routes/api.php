@@ -23,6 +23,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\AccesoriosController;
+use App\Http\Controllers\ReparacionesController;
+use App\Http\Controllers\DispositivosController;
 
 Route::group([
 
@@ -56,6 +58,15 @@ Route::group([
     Route::put('actualizaraccesorio/{id}',[AccesoriosController::class,'update'])->where('id','[0-9]+');
     Route::delete('eliminaraccesorio/{id}',[AccesoriosController::class,'delete'])->where('id','[0-9]+');
 
+    Route::get('getreparaciones', [ReparacionesController::class, 'index']);
+    Route::post('storereparaciones', [ReparacionesController::class, 'store']);
+    Route::put('postreparaciones/{id}', [ReparacionesController::class, 'update']);
+    Route::delete('deletereparaciones/{id}', [ReparacionesController::class, 'destroy']);
+
+    Route::get('getdispositivos', [DispositivosController::class, 'index']);
+    Route::post('postdispositivos', [DispositivosController::class, 'store']);
+    Route::put('putdispositivos/{id}', [DispositivosController::class, 'update']);
+    Route::delete('deletedispositivos/{id}', [DispositivosController::class, 'destroy']);
 
 
 

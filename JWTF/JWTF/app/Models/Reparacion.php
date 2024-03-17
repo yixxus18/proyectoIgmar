@@ -10,6 +10,10 @@ class Reparacion extends Model
     use HasFactory;
      protected $fillable=['tipo_reparaciones'];
 
+     protected $table = 'reparaciones';
+
+     public $timestamps = false;
+
 
      public function ingreso_reparacion()
      {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +10,8 @@ class Dispositivo extends Model
 {
     use HasFactory;
     protected $table ='dispositivos';
+
+    public $timestamps = false;
 
     protected $fillable=['marca','modelo','tipo_dispositivos'];
 
