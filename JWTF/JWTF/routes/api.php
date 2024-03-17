@@ -45,9 +45,12 @@ Route::group([
     Route::post('verificar', [AuthController::class,'verificarcodigo']);
     Route::post('verify', [AuthController::class,'verify']);
 
+    Route::get('getcategoria',[CategoriasController::class,'index']);
     Route::post('storecategoria',[CategoriasController::class,'store']);
     Route::put('editarcategoria/{id}',[CategoriasController::class,'update'])->where('id','[0-9]+');
     Route::delete('eliminarcategoria/{id}',[CategoriasController::class,'delete'])->where('id','[0-9]+');
+
+
 
 });
 

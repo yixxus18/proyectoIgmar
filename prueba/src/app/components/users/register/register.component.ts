@@ -16,6 +16,7 @@ export class RegisterComponent {
 
   registerMessage: string = '';
   state: boolean = false;
+  
 
   registerForm = new FormGroup({
     name: new FormControl('', Validators.required),

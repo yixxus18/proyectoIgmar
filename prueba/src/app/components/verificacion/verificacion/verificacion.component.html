@@ -5,7 +5,7 @@
       <input type="text" id="verificacion" name="verificacion" [(ngModel)]="codigoVerificacion" required>
       <p></p>
       <button type="submit">Verificar</button>
+      <p></p>
+      <div *ngIf="mensaje">{{ mensaje }}</div>
     </form>
-    <p></p>
-    <div *ngIf="mensaje">{{ mensaje }}</div>
   </div>

@@ -7,20 +7,38 @@ import { AuthService } from '../../../services/auth.service';
 import { RegisterComponent } from "../register/register.component";
 import { AgregarusersComponent } from './agregarusers/agregarusers.component';
 import { EditComponent } from "./edit/edit.component";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { first } from 'rxjs';
+import { Token } from '@angular/compiler';
 declare var $: any;
 @Component({
     selector: 'app-crud',
     standalone: true,
     templateUrl: './crud.component.html',
     styleUrl: './crud.component.css',
-    imports: [RouterModule, CommonModule, RegisterComponent, AgregarusersComponent, EditComponent]
+    imports: [RouterModule, CommonModule, RegisterComponent, AgregarusersComponent, EditComponent , ReactiveFormsModule]
 })
 export class CrudComponent {
   users: User[] | undefined;
   rolUsuario: number = 0;
+  registerForm: FormGroup;
+  loading = false;
+  submitted = false;
+  registerMessage: any;
+  token = localStorage.getItem('token');
+  selectedUserId: any;
+  @ViewChild('editModal') editModal!: ElementRef;
 
 
-  constructor(private userService: UsersService, private AuthService: AuthService) { }
+
+  constructor(private userService: UsersService, private AuthService: AuthService , private formBuilder: FormBuilder) {
+    this.registerForm = this.formBuilder.group({
+      id: [''],
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      rol_id: ['', Validators.required]
+    });
+   }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -47,9 +65,45 @@ export class CrudComponent {
   }
 
   editUser(user: User): void {
-    // Implementar lógica de edición aquí
-    console.log('Editar usuario:', user);
+    this.registerForm.patchValue(user);
+    // También puedes almacenar el ID del usuario seleccionado en una propiedad para usarlo en onSubmit
+    this.selectedUserId = user.id;
   }
+  
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.registerForm.invalid) {
+      return;
+    }
+  
+    this.loading = true;
+    const token = localStorage.getItem('token');
+    const userId = this.selectedUserId; // Usar el ID del usuario seleccionado
+    if (token && userId) {
+      this.userService.editUser(userId, this.registerForm.value, token)
+        .pipe(first())
+        .subscribe(
+          data => {
+            alert('Usuario actualizado correctamente');
+            this.loadUsers();
+            this.loading = false;
+          },
+          error => {
+            console.log(error);
+            if (error.error.data && error.error.data.name) {
+              this.registerMessage = error.error.data.name.join(' ');  // Muestra el mensaje de error para 'name'
+            } else if (error.error.data && error.error.data.email) {
+              this.registerMessage = error.error.data.email.join(' ');  // Muestra el mensaje de error para 'email'
+            } else if (error.error.data && error.error.data.rol_id) {
+              this.registerMessage = error.error.data.rol_id.join(' ');  // Muestra el mensaje de error para 'rol_id'
+            } else {
+              this.registerMessage = 'Error al registrarse. Por favor, intente de nuevo.';
+            }
+          }
+        );
+    }
+  }
+  
 
   confirmDeleteUser(userId: number): void {
     if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {

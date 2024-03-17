@@ -42,15 +42,35 @@
     </div>
   </div>
 
-  <div class="modal" id="exampleModal1" tabindex="-1" role="dialog">
+  <div class="modal" id="exampleModal1" #editModal tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h3 class="modal-title">Editar usuario</h3>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="adduser()"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <app-edit></app-edit>
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="name" formControlName="name">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+            </div>
+            <div class="mb-3">
+              <div class="form-group">
+                <label for="rol_id">Rol</label>
+                <select id="rol_id" formControlName="rol_id">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>              
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="loading">Guardar cambios</button>
+          </form>
         </div>
       </div>
     </div>

@@ -1,0 +1,31 @@
+<div class="container text-center">
+    <h1 class="my-4">Categorias</h1>
+    <div *ngFor="let category of categories" class="my-2">
+        {{ category.id }} - {{ category.tipo_categoria }}
+        <button class="btn btn-primary mx-2" (click)="editCategory(category)">Editar</button>
+        <button class="btn btn-danger" (click)="deleteCategory(category.id)">Eliminar</button>
+    </div>
+    <hr>
+    <form *ngIf="tempCategory; else addCategoryForm" (submit)="updateCategory()" class="container">
+        <div class="form-group">
+            <label for="tipo_categoria">Tipo de categoría:</label>
+            <input type="text" [(ngModel)]="tempCategory.tipo_categoria" name="tipo_categoria" id="tipo_categoria" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button type="button" (click)="cancelEdit()" class="btn btn-secondary">Cancelar</button>
+    </form>
+    
+      
+    <ng-template #addCategoryForm>
+        <h2>Agregar categorias</h2>
+        <form (submit)="addCategory(newCategory.value); newCategory.value=''" class="my-4">
+            <input type="text" #newCategory name="newCategory" required class="form-control my-2">
+            <button type="submit" class="btn btn-primary">Agregar categoría</button>
+        </form>
+    </ng-template>
+
+    <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+</div>
+
+
+  

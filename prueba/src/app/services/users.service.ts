@@ -33,9 +33,11 @@ export class UsersService {
   }
 
 
-  editUser(user: User): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/put/${user.id}`, user);
+  editUser(userId: number, user: User, token: string): Observable<any> {
+    const url = `${this.apiUrl}/put/${userId}`;
+    return this.http.put<any>(url, user, { headers: { Authorization: `Bearer ${token}` } });
   }
+  
 
   deleteUser(userId: number, token: string): Observable<any> {
     const url = `${this.apiUrl}/delete/${userId}`;

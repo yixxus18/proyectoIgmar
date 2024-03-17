@@ -33,13 +33,15 @@ export class VerificacionComponent {
     this.authService.verificarCodigo(verificacion, token).subscribe({
       next: (response) => {
         console.log(response);
-        this.router.navigate(['/index']);
+        this.mensaje = response.message;
+        this.router.navigateByUrl('/index', { replaceUrl: true });
       },
       error: (error) => {
         console.error(error);
-        
+        this.mensaje = "Codigo invalido, verifica el codigo.";
       }
     });
+    
   }
 
 }

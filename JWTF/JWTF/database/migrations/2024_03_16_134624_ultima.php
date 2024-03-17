@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orden_venta_accesorios',function(Blueprint $table){
-         $table->id();
-         $table->foreignId('orden_venta')->constrained("orden_venta");
-         $table->foreignId('accesorio')->constrained();
-         $table->integer('cantidad');
-         
+        Schema::create('reporte', function (Blueprint $table) {
+            $table->increments('id_reporte');
+            $table->decimal('precio', 8, 2);
+            $table->date('fecha_entrega');
+            $table->unsignedInteger('id_ingresos');
+            $table->foreign('id_ingresos')->references('id')->on('ingresos_reparaciones');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orden_venta_accesorios');
+        //
     }
 };

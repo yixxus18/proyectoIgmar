@@ -22,7 +22,7 @@
           </div>
       </div>
   
-      <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Iniciar sesión</button>
+      <button type="submit" [disabled]="!loginForm.valid" >Iniciar sesión</button>
       <div *ngIf="loginMessage" [class.message-success]="state" [class.message-error]="!state" class="message">
         {{ loginMessage }}
       </div>
