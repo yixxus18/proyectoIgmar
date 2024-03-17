@@ -85,7 +85,10 @@ class AuthController extends Controller
     {
         
         try {
-            return response()->json(["isActive"=>true]);
+            return response()->json([
+                "isActive" => true,
+                "tipo usuario" => auth()->user()->rol_id
+            ]);             
         
         } catch (\Exception $e) {
             return response()->json(["isActive"=>false], 500);

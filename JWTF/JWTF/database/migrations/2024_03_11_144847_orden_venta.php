@@ -17,7 +17,7 @@ return new class extends Migration
        $table->id();
        $table->date('fecha_orden');
        $table->String('estado');
-       $table->foreignId('user')->constrained();
+       $table->foreignId('user')->constrained()->onDelete('cascade');
        $table->String('tipo_venta');
 
         });

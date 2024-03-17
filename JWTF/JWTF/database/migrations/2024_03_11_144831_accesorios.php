@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orden_venta_accesorios',function(Blueprint $table){
-         $table->id();
-         $table->foreignId('orden_venta')->constrained("orden_venta");
-         $table->foreignId('accesorio')->constrained();
-         $table->integer('cantidad');
-         
-        });
+      Schema::create('accesorios',function (Blueprint $table){
+      $table->id();
+      $table->String('nombre');
+      $table->String('descripcion');
+      $table->integer('precio');
+      $table->integer('cantidad');
+      $table->foreignId('categoria')->constrained()->onDelete('cascade');
+      });
+
     }
 
     /**
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orden_venta_accesorios');
+        Schema::dropIfExists('accesorios');
     }
 };

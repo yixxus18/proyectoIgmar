@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('ingresos_reparaciones',function(Blueprint $table){
        $table->id();
-       $table->foreignId('user')->constrained('users');
-       $table->foreignId('dispositivo')->constrained('dispositivos');
-       $table->foreignId('reparacion')->constrained('reparaciones');
+       $table->foreignId('user')->constrained('users')->onDelete('cascade');
+       $table->foreignId('dispositivo')->constrained('dispositivos')->onDelete('cascade');
+       $table->foreignId('reparacion')->constrained('reparaciones')->onDelete('cascade');
        $table->string('descripcion');
        $table->date('fecha_ingreso');
        $table->string('estatus');

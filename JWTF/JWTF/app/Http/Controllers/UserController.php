@@ -39,7 +39,7 @@ class UserController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password=Hash::make($request->password);
-        $user->role_id=$request->get('rol_id',3);
+        $user->rol_id=$request->get('rol_id',3);
         $user->save();
         $signedroute = URL::temporarySignedRoute(
             'activate',
@@ -72,7 +72,7 @@ class UserController extends Controller
             $user->name=$request->get('name',$user->name);
             $user->email=$request->get('email',$user->email);
             $user->password=$request->get('password',$user->password);
-            $user->role_id=$request->get('rol_id',$user->role_id);
+            $user->rol_id=$request->get('rol_id',$user->rol_id);
             $user->save();
             return response()->json(["msg"=>"User updated","data"=>$user,],202);
         }
@@ -86,9 +86,8 @@ class UserController extends Controller
     {
         $user=User::find($id);
         if($user){
-            $user->is_active = false;
-            $user->save();
-            return response()->json(["msg"=>"User disabled","data"=>$user,],202);
+            $user->delete();
+            return response()->json(["msg"=>"User eliminado","data"=>$user,],202);
         }
         return response()->json([
             "msg"   =>"User not found"

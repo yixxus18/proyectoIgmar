@@ -16,7 +16,7 @@ class AuthRole2
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()&&(auth()->user()->role_id==1||auth()->user()->role_id==2))
+        if(auth()->user()&&(auth()->user()->rol_id==1||auth()->user()->rol_id==2))
         {
             return $next($request);
         }

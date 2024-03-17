@@ -18,8 +18,8 @@ return new class extends Migration
     $table->date('fecha_cita');
     $table->String('motivo_cita');
     $table->String('estado_cita');
-    $table->foreignId('dispositivo')->constrained("dispositivos");
-    $table->foreignId('usuario')->constrained("users");
+    $table->foreignId('dispositivo')->constrained("dispositivos")->onDelete('cascade');
+    $table->foreignId('usuario')->constrained("users")->onDelete('cascade');
     $table->time('hora_cita');
         });
     }
