@@ -27,7 +27,7 @@ export const routes: Routes = [
           path: 'categorias',
           loadComponent: () => import('./components/categorias/categorias.component').then(m => m.CategoriesComponent),
           canActivate: [AuthGuard],
-          data: {role: [1]}
+          data: {role: [1,2,3]}
         },
 
       ]

@@ -9,7 +9,7 @@ class Accesorio extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $fillable=['nombre','descripcion','precio','cantidad','categoria'];
+    protected $fillable=['nombre','descripcion','precio','cantidad','tipo_categoria'];
 
     public function tipo_categoria()
     {

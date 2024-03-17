@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\AccesoriosController;
 
 Route::group([
 
@@ -49,6 +50,12 @@ Route::group([
     Route::post('storecategoria',[CategoriasController::class,'store']);
     Route::put('editarcategoria/{id}',[CategoriasController::class,'update'])->where('id','[0-9]+');
     Route::delete('eliminarcategoria/{id}',[CategoriasController::class,'delete'])->where('id','[0-9]+');
+
+    Route::get('getaccesorios',[AccesoriosController::class,'index']);
+    Route::post('storeaccesorios',[AccesoriosController::class,'store']);
+    Route::put('actualizaraccesorio/{id}',[AccesoriosController::class,'update'])->where('id','[0-9]+');
+    Route::delete('eliminaraccesorio/{id}',[AccesoriosController::class,'delete'])->where('id','[0-9]+');
+
 
 
 

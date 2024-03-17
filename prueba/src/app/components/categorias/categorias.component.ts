@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ServerResponse } from '../../Interfaces/server-respone';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-categories',
@@ -18,15 +19,16 @@ export class CategoriesComponent implements OnInit {
   newCategory: Category = { id: 0, tipo_categoria: '' };
   categories: Category[] | undefined;
   message: string | null = null;
-
+  rolUsuario: number = 0;
   selectedCategory: Category | null = null;
   tempCategory: Category | null = null;  // Agrega esta línea
   registerMessage: string | null = null;  // Agrega esta línea
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService, private AuthService: AuthService) {}
 
   ngOnInit(): void {
     this.loadCategories();
+    this.loadUserRole();
   }
 
   loadCategories(): void {
@@ -34,6 +36,15 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.getCategories(token).subscribe((categories: ServerResponse) => {
       this.categories = categories['data :'];
     });
+  }
+
+  loadUserRole(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.AuthService.verifyToken(token).subscribe(response => {
+        this.rolUsuario = response['tipo usuario'];
+      });
+    }
   }
   
   
