@@ -41,6 +41,12 @@ export const routes: Routes = [
           canActivate: [AuthGuard],
           data: {role: [1,2,3]}
         },
+        {
+          path: 'accesorios',
+          loadComponent: () => import('./components/accesorios/accesorios.component').then(m => m.AccesoriosComponent),
+          canActivate: [AuthGuard],
+          data: {role: [1,2,3]}
+        },
 
       ]
     }    
