@@ -13,13 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dispositivos', function (Blueprint $table)
-        {
-         $table->id();
-         $table->string('marca');
-         $table->string('modelo');
-         $table->string('tipo_dispositivos');
-        });
+        //
     }
 
     /**
@@ -29,6 +23,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        //
     }
 };

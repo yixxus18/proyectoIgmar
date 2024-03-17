@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reporte', function (Blueprint $table) {
-            $table->increments('id_reporte');
-            $table->decimal('precio', 8, 2);
-            $table->date('fecha_entrega');
-            $table->unsignedInteger('id_ingresos');
-            $table->foreign('id_ingresos')->references('id')->on('ingresos_reparaciones');
-            $table->timestamps();
+        Schema::create('ingresos_reparaciones',function(Blueprint $table){
+       $table->id();
+       $table->String('nombre');
+       $table->foreignId('dispositivo')->constrained();
+       $table->foreignId('reparacion')->constrained('reparaciones');
+       $table->string('descripcion');
+       $table->date('fecha_ingreso');
+       $table->string('estatus');
+       
         });
     }
 
