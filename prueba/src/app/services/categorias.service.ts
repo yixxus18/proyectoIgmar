@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Accesorio } from '../Interfaces/accesorio';
-import { ApiResponse } from '../Interfaces/api-response';
+import { ApiResponse, ApiResponse3 } from '../Interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,12 @@ export class AccesorioService {
   constructor(private http: HttpClient) { }
 
   // Cambia el tipo de retorno del método getAccesorios()
-  getAccesorios(token: string): Observable<ApiResponse> {
+  getAccesorios(token: string): Observable<ApiResponse3> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get<ApiResponse>(`${this.apiUrl}/getaccesorios`, { headers });
+    return this.http.get<ApiResponse3>(`${this.apiUrl}/obteneraccesorio`, { headers });
   }
 
   addAccesorio(accesorio: Accesorio, token: string): Observable<any> {
@@ -27,7 +27,7 @@ export class AccesorioService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.post<any>(`${this.apiUrl}/storeaccesorios`, accesorio, { headers });
+    return this.http.post<any>(`${this.apiUrl}/storeaccesorio`, accesorio, { headers });
   }
 
   updateAccesorio(accesorio: Accesorio, token: string): Observable<any> {
@@ -35,7 +35,7 @@ export class AccesorioService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.put<any>(`${this.apiUrl}/actualizaraccesorio/${accesorio.id}`, accesorio, { headers });
+    return this.http.put<any>(`${this.apiUrl}/editaraccesorio/${accesorio.id}`, accesorio, { headers });
   }
 
   deleteAccesorio(id: number, token: string): Observable<any> {

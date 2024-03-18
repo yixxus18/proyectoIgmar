@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Device } from '../Interfaces/device';
+import { ApiResponse } from '../Interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,12 @@ export class DeviceService {
 
   constructor(private http: HttpClient) {}
 
-  getDevices(token: string): Observable<Device[]> {
+  getDevices(token: string): Observable<ApiResponse> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      'Authorization': `Bearer ${token}`
     });
-    return this.http.get<Device[]>(`${this.apiUrl}/getdispositivos`, { headers });
+    return this.http.get<ApiResponse>(`${this.apiUrl}/obtenerdispositivo`, { headers });
   }
 
   addDevice(device: Device, token: string): Observable<any> {
@@ -25,7 +26,7 @@ export class DeviceService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     });
-    return this.http.post(`${this.apiUrl}/postdispositivos`, device, { headers });
+    return this.http.post(`${this.apiUrl}/storedispositivo`, device, { headers });
   }
 
   updateDevice(device: Device, token: string): Observable<any> {
@@ -33,7 +34,7 @@ export class DeviceService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     });
-    return this.http.put(`${this.apiUrl}/putdispositivos/${device.id}`, device, { headers });
+    return this.http.put(`${this.apiUrl}/editardispositivo/${device.id}`, device, { headers });
   }
 
   deleteDevice(id: number, token: string): Observable<any> {
@@ -41,6 +42,6 @@ export class DeviceService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     });
-    return this.http.delete(`${this.apiUrl}/deletedispositivos/${id}`, { headers });
+    return this.http.delete(`${this.apiUrl}/eliminardispositivo/${id}`, { headers });
   }
 }

@@ -6,6 +6,8 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { DeviceResponse } from '../../Interfaces/device-response';
+import { ApiResponse } from '../../Interfaces/api-response';
 
 @Component({
   selector: 'app-devices',
@@ -32,10 +34,12 @@ export class DevicesComponent implements OnInit {
 
   loadDevices(): void {
     const token = localStorage.getItem('token') || '';
-    this.deviceService.getDevices(token).subscribe(devices => {
-      this.devices = devices;
+    this.deviceService.getDevices(token).subscribe((response: ApiResponse) => {// Añade esta línea
+      this.devices = response['data :'];
     });
   }
+  
+  
 
   loadUserRole(): void {
     const token = localStorage.getItem('token');
@@ -76,10 +80,12 @@ export class DevicesComponent implements OnInit {
           this.tempDevice = null;
           this.registerMessage = response.msg;
           this.message = response.msg;
+          console.log(response.msg);
         },
         error => {
           this.registerMessage = 'Error al actualizar dispositivo. Por favor, inténtelo de nuevo.';
           this.message = error.error.msg;
+          console.log(error)
         }
       );
     }

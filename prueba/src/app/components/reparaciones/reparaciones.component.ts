@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ApiResponse, ApiResponse2 } from '../../Interfaces/api-response';
 
 @Component({
   selector: 'app-reparaciones',
@@ -32,10 +33,12 @@ export class ReparacionesComponent implements OnInit {
 
   loadReparaciones(): void {
     const token = localStorage.getItem('token') || '';
-    this.reparacionService.getReparaciones(token).subscribe((reparaciones: Reparacion[]) => {
-      this.reparaciones = reparaciones;
+    this.reparacionService.getReparaciones(token).subscribe((response: ApiResponse2) => {
+      this.reparaciones = response['data :'];
+      console.log(this.reparaciones);
     });
   }
+  
 
   loadUserRole(): void {
     const token = localStorage.getItem('token');

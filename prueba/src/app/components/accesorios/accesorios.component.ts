@@ -37,8 +37,7 @@ export class AccesoriosComponent implements OnInit {
   loadAccesorios(): void {
     const token = localStorage.getItem('token') || '';
     this.accesorioService.getAccesorios(token).subscribe(response => {
-      console.log(response.data); // Añade esta línea
-      this.accesorios = response.data;
+      this.accesorios = response['data :'];
     });
     
   }

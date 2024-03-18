@@ -37,7 +37,7 @@ class AccesoriosController extends Controller
     }
 
     public function index(){
-      return response()->json(["Msg" => "Accesorios encontrados","data :"=>Accesorio::all()],20);
+      return response()->json(["Msg" => "Accesorios encontrados","data :"=>Accesorio::all()],200);
     }
 
     public function delete(int $id)

@@ -59,7 +59,7 @@ class DispositivosController extends Controller
         }
 
 
-        $dispositivo = Categoria::find($id);
+        $dispositivo = Dispositivo::find($id);
 
         if ($dispositivo)
         {

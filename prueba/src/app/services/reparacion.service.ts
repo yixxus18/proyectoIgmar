@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reparacion } from '../Interfaces/reparacion';
+import { ApiResponse2 } from '../Interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,12 @@ export class ReparacionService {
 
   constructor(private http: HttpClient) { }
 
-  getReparaciones(token: string): Observable<Reparacion[]> {
+  getReparaciones(token: string): Observable<ApiResponse2> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get<Reparacion[]>(`${this.apiUrl}/getreparaciones`, { headers });
+    return this.http.get<ApiResponse2>(`${this.apiUrl}/obtenerreparacion`, { headers }); 
   }
 
   addReparacion(reparacion: Reparacion, token: string): Observable<any> {
@@ -25,7 +26,7 @@ export class ReparacionService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.post<any>(`${this.apiUrl}/storereparaciones`, reparacion, { headers });
+    return this.http.post<any>(`${this.apiUrl}/storereparacion`, reparacion, { headers });
   }
 
   updateReparacion(reparacion: Reparacion, token: string ): Observable<any> {
@@ -33,7 +34,7 @@ export class ReparacionService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.put<any>(`${this.apiUrl}/postreparaciones/${reparacion.id}`, reparacion, { headers });
+    return this.http.put<any>(`${this.apiUrl}/editarreparacion/${reparacion.id}`, reparacion, { headers });
   }
 
   deleteReparacion(id: number, token: string): Observable<any> {
@@ -41,6 +42,6 @@ export class ReparacionService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.delete<any>(`${this.apiUrl}/deletereparaciones/${id}`, { headers });
+    return this.http.delete<any>(`${this.apiUrl}/eliminarreparacion/${id}`, { headers });
   }
 }

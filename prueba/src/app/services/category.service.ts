@@ -17,7 +17,7 @@ export class CategoryService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     });
-    return this.http.get<ServerResponse>(`${this.apiUrl}/getcategoria`, { headers });
+    return this.http.get<ServerResponse>(`${this.apiUrl}/obtenercategoria`, { headers });
   }
   
 
