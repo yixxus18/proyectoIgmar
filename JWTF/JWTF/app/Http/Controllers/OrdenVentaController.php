@@ -36,7 +36,7 @@ class OrdenVentaController extends Controller
     }
 
     public function index(){
-      return response()->json(["Msg" => "Accesorios encontrados","data :"=>Orden_Venta::all()],20);
+      return response()->json(["Msg" => "Accesorios encontrados","data :"=>Orden_Venta::all()],200);
     }
 
     public function delete(int $id)

@@ -53,6 +53,18 @@ export const routes: Routes = [
           canActivate: [AuthGuard],
           data: {role: [1,2,3]}
         },
+        {
+          path: 'ordenventa',
+          loadComponent: () => import('./components/ordenventa/ordenventa.component').then(m => m.OrdenVentaComponent),
+          canActivate: [AuthGuard],
+          data: {role: [1,2,3]}
+        },
+        {
+          path: 'ordenventaa',
+          loadComponent: () => import('./components/ordenventa-a/ordenventa-a.component').then(m => m.OrdenventaAccesoriosComponent),
+          canActivate: [AuthGuard],
+          data: {role: [1,2,3]}
+        },
 
       ]
     }    

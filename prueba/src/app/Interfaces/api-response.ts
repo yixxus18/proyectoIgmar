@@ -30,3 +30,29 @@ export interface ApiResponse4 {
   Msg: string;
   "data :"?: ReparacionDispositivo[];
 }
+
+export interface OrdenVenta {
+  id: number;
+  fecha_orden: Date;
+  estado: string;
+  user: number;
+  tipo_venta: string;
+}
+
+export interface ApiResponse5 {
+  Msg: string;
+  "data :"?: OrdenVenta[];
+}
+
+
+export interface OrdenVentaAccesorios {
+  id: number;
+  orden_venta: number;
+  accesorio: number;
+  cantidad: number;
+}
+
+export interface ApiResponse6 {
+  Msg: string;
+  "data :"?: OrdenVentaAccesorios[];
+}

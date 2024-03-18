@@ -42,12 +42,20 @@ export class AccesoriosComponent implements OnInit {
     
   }
 
+  
+
   loadCategories(): void {
     const token = localStorage.getItem('token') || '';
     this.CategoryService.getCategories(token).subscribe((categories: ServerResponse) => {
       this.categories = categories['data :'];
     });
   }
+
+  getCategoriaName(id: number): string {
+    const categoria = this.categories?.find(categoria => categoria.id === id);
+    return categoria ? categoria.tipo_categoria : '';
+  }
+  
 
   loadUserRole(): void {
     const token = localStorage.getItem('token');

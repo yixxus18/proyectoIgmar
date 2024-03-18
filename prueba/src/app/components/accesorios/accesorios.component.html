@@ -21,7 +21,7 @@
                     <td>{{ accesorio.descripcion }}</td>
                     <td>{{ accesorio.precio }}</td>
                     <td>{{ accesorio.cantidad }}</td>
-                    <td>{{ accesorio.categoria }}</td>
+                    <td>{{ getCategoriaName(+accesorio.categoria) }}</td>
                     <td>
                         <button class="btn btn-primary mx-2" (click)="editAccesorio(accesorio)" *ngIf="rolUsuario === 1 || rolUsuario === 3">Editar</button>
                         <button class="btn btn-danger" (click)="deleteAccesorio(accesorio.id)" *ngIf="rolUsuario === 1">Eliminar</button>
@@ -54,8 +54,10 @@
       </div>
       <div class="form-group">
         <label for="categoria">Categoría:</label>
-        <input type="text" [(ngModel)]="tempAccesorio.categoria" name="categoria" id="categoria" class="form-control" required>
-      </div>
+        <select [(ngModel)]="tempAccesorio.categoria" name="categoria" id="categoria" class="form-control" required>
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.tipo_categoria }}</option>
+        </select>
+      </div> 
       <button type="submit" class="btn btn-primary">Guardar cambios</button>
       <button type="button" (click)="cancelEdit()" class="btn btn-secondary">Cancelar</button>
     </form>
