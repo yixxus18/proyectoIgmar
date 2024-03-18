@@ -47,6 +47,12 @@ export const routes: Routes = [
           canActivate: [AuthGuard],
           data: {role: [1,2,3]}
         },
+        {
+          path: 'reparaciondispositivos',
+          loadComponent: () => import('./components/reparacion-dispositivo/reparacion-dispositivo.component').then(m => m.ReparacionDispositivoComponent),
+          canActivate: [AuthGuard],
+          data: {role: [1,2,3]}
+        },
 
       ]
     }    

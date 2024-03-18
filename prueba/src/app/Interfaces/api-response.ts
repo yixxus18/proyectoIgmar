@@ -16,3 +16,17 @@ export interface ApiResponse3 {
   Msg: string;
   'data :': Accesorio[]; // Aquí deberías tener el arreglo de reparaciones
 }
+
+// reparacion-dispositivo.ts
+export interface ReparacionDispositivo {
+  id: number;
+  dispositivo_id: number;
+  reparaciones_id: number;
+  precio: string;
+}
+
+// api-response.ts
+export interface ApiResponse4 {
+  Msg: string;
+  "data :"?: ReparacionDispositivo[];
+}

@@ -11,7 +11,7 @@ class ReparacionDispositivoController extends Controller
 {
     public function index()
     {
-        return response()->json(["Msg" => "ReparacionDispositivos encontrados","data :"=>Reparacion_Dispositivo::all()],20);
+        return response()->json(["Msg" => "ReparacionDispositivos encontrados","data :"=>Reparacion_Dispositivo::all()],200);
     }
 
     public function store(Request $request)
