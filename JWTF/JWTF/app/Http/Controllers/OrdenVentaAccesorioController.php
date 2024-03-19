@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Orden_Venta_Accesorio;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class OrdenVentaAccesorioController extends Controller
@@ -33,20 +34,29 @@ class OrdenVentaAccesorioController extends Controller
       
       
       $ordenventa->save();
+      $data=$ordenventa->toArray();
+      $user_id = Auth::id();
+      LogHistoryController::store($request, 'ordenventaaccesorio', $data, $user_id);
       return response()->json(["msg"=>"orden_venta_accesorio agregada correctamente"],200);
     }
 
-    public function index(){
+    public function index(Request $request){
+      $data=Orden_Venta_Accesorio::all()->toArray();
+      $user_id =Auth::id();
+      LogHistoryController::store($request, 'ordenventaaccesorio', $data, $user_id);
       return response()->json(["Msg" => "orden_venta_accesorios encontrados","data :"=>Orden_Venta_Accesorio::all()],200);
     }
 
-    public function delete(int $id)
+    public function delete(Request $request,int $id)
     {
         $ordenventa= Orden_Venta_Accesorio::find($id);
 
         if($ordenventa)
         {
+          $data=$ordenventa->toArray();
             $ordenventa->delete();
+            $user_id = Auth::id();
+            LogHistoryController::store($request, 'ordenventaaccesorio', $data, $user_id);
           return response()->json(['orden_venta_accesorio eliminada'],200);
         }
   
@@ -77,6 +87,9 @@ class OrdenVentaAccesorioController extends Controller
        
 
         $ordenventa->save();
+        $data=$ordenventa->toArray();
+        $user_id = Auth::id();
+        LogHistoryController::store($request, 'ordenventaaccesorio', $data, $user_id);
           return response()->json(["msg"=>"orden_venta_accesorio actualizada","data"=> $ordenventa],202);
       }
       return response()->json([

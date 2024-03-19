@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 
 use App\Models\Cita;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 class CitasController extends Controller
 {
@@ -19,6 +21,8 @@ class CitasController extends Controller
             "dispositivo"=>"required|exists:dispositivos,id",
             "usuario"=>"required|exists:users,id",
             "hora_cita"=>"required",
+
+            
         ]
       );
 
@@ -38,20 +42,29 @@ class CitasController extends Controller
       
       
       $cita->save();
+      $data= $cita->toArray();
+      $user_id = Auth::id();
+      LogHistoryController::store($request, 'Cita', $data, $user_id);
       return response()->json(["msg"=>"cita agregada correctamente"],200);
     }
 
-    public function index(){
+    public function index(Request $request){
+      $data=Categoria::all()->toArray();
+      $user_id =Auth::id();
+      LogHistoryController::store($request, 'categoria', $data, $user_id);
       return response()->json(["Msg" => "citas encontradas","data :"=>Cita::all()],200);
     }
 
-    public function delete(int $id)
+    public function delete(Request $request,int $id)
     {
         $cita= Cita::find($id);
 
         if($cita)
-        {
+        { 
+          $data = $cita->toArray();
             $cita->delete();
+            $user_id = Auth::id();
+            LogHistoryController::store($request, 'Cita', $data, $user_id);
           return response()->json(['cita eliminada'],200);
         }
   
@@ -80,15 +93,17 @@ class CitasController extends Controller
       $cita =Cita::find($id);
       if ( $cita)
       {
+       
         $cita->fecha_cita=$request->get('fecha_cita', $cita->fecha_cita);
         $cita->motivo_cita=$request->get('motivo_cita', $cita->motivo_cita);
         $cita->estado_cita=$request->get('estado_cita', $cita->estado_cita);
         $cita->dispositivo=$request->get('dispositivo', $cita->dispositivo);
         $cita->usuario=$request->get('usuario', $cita->usuario);
         $cita->hora_cita=$request->get('hora_cita', $cita->hora_cita);
-       
-
         $cita->save();
+        $data= $cita->toArray();
+        $user_id = Auth::id();
+        LogHistoryController::store($request, 'Cita', $data, $user_id);
           return response()->json(["msg"=>"cita actualizada","data"=> $cita],202);
       }
       return response()->json([

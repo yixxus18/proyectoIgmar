@@ -1,7 +1,6 @@
 <?php
 
 
-use App\Http\Controllers\ReportesController;
 use App\Mail\ValidatorEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +31,7 @@ use App\Http\Controllers\OrdenVentaController;
 use App\Http\Controllers\OrdenVentaAccesorioController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\IngresoReparacionesController;
+use App\Http\Controllers\LogHistoryController;
 
 
 Route::group([
@@ -95,20 +95,21 @@ Route::group([
     Route::delete('eliminarordenventaA/{id}',[OrdenVentaAccesorioController::class,'delete']);
     Route::get('obtenerordenventaA',[OrdenVentaAccesorioController::class,'index']);
 
+
+    
     Route::post('storecita',[CitasController::class,'store']);
     Route::put('editarcita/{id}',[CitasController::class,'update']);
     Route::delete('eliminarcita/{id}',[CitasController::class,'delete']);
     Route::get('obtenercita',[CitasController::class,'index']);
 
+    
     Route::post('storeingreso',[IngresoReparacionesController::class,'store']);
     Route::put('editaringreso/{id}',[IngresoReparacionesController::class,'update']);
     Route::delete('eliminaringreso/{id}',[IngresoReparacionesController::class,'delete']);
     Route::get('obteneringreso',[IngresoReparacionesController::class,'index']);
 
-    Route::post('storereporte',[ReportesController::class,'store']);
-    Route::put('editarreporte/{id}',[ReportesController::class,'update']);
-    Route::delete('eliminarreporte/{id}',[ReportesController::class,'delete']);
-    Route::get('obtenerreporte',[ReportesController::class,'index']);
+
+    Route::get('logs',[LogHistoryController::class,'index']);
 });
 
 

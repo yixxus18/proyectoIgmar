@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ingreso_Reparacion;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class IngresoReparacionesController extends Controller
@@ -14,6 +15,7 @@ class IngresoReparacionesController extends Controller
       $validate = Validator::make(
         $request->all(),[
             "user"=>"required|exists:users,id",
+            "dipositivo"=>"required|exists:dispositivos,id",
             "reparacion"=>"required|exists:reparaciones,id",
             "descripcion"=>"required|min:1",
             "fecha_ingreso"=>"required",
@@ -37,22 +39,30 @@ class IngresoReparacionesController extends Controller
       $ingreso->fecha_ingreso=$request->fecha_ingreso;
       $ingreso->estatus=$request->estatus;
       
-      
+      $data=$ingreso->toArray();
+      $user_id = Auth::id();
+      LogHistoryController::store($request, 'ingreso', $data, $user_id);
       $ingreso->save();
       return response()->json(["msg"=>"ingreso_reparacion agregado correctamente"],200);
     }
 
-    public function index(){
+    public function index(Request $request){
+      $data=Ingreso_Reparacion::all()->toArray();
+      $user_id =Auth::id();
+      LogHistoryController::store($request, 'ingreso', $data, $user_id);
       return response()->json(["Msg" => "ingreso a reparaciones encontradas","data :"=>Ingreso_Reparacion::all()],200);
     }
 
-    public function delete(int $id)
+    public function delete(Request $request,int $id)
     {
         $ingreso= Ingreso_Reparacion::find($id);
 
         if($ingreso)
         {
+          $data=$ingreso->toArray();
             $ingreso->delete();
+            $user_id = Auth::id();
+        LogHistoryController::store($request, 'ingreso', $data, $user_id);
           return response()->json(['ingreso a reparacion eliminada'],200);
         }
   
@@ -64,6 +74,7 @@ class IngresoReparacionesController extends Controller
         $validate = Validator::make(
             $request->all(),[
                 "user"=>"required|exists:users,id",
+                "dipositivo"=>"required|exists:dispositivos,id",
                 "reparacion"=>"required|exists:reparaciones,id",
                 "descripcion"=>"required|min:1",
                 "fecha_ingreso"=>"required",
@@ -89,6 +100,9 @@ class IngresoReparacionesController extends Controller
        
 
         $ingreso->save();
+        $data=$ingreso->toArray();
+        $user_id = Auth::id();
+        LogHistoryController::store($request, 'ingreso', $data, $user_id);
           return response()->json(["msg"=>"ingreso a reparar actualizado","data"=> $ingreso],202);
       }
       return response()->json([

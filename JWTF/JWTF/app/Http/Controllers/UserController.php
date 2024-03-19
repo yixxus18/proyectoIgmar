@@ -9,11 +9,15 @@ use App\Mail\ValidatorEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
   
-    public function index()
+    public function index(Request $request)
     { 
+        $data=User::all()->toArray();
+        $user_id =Auth::id();
+        LogHistoryController::store($request, 'user', $data, $user_id);
        return response()->json(["msg"=>"Users finded",
         "data: "=>User::all(),],200);
     }
@@ -47,11 +51,14 @@ class UserController extends Controller
             ['user' => $user->id]
         );
         Mail::to($request->email)->send(new ValidatorEmail($signedroute));
+        $data=$user->toArray();
+      $user_id = Auth::id();
+      LogHistoryController::store($request, 'user', $data, $user_id);
         return response()->json(["msg"=>"User created, check your email","data"=>$user,],201);
     }
 
     public function update(Request $request,int $id)
-    {
+    {   
         $validate = Validator::make(
             $request->all(),[
                 "name"=>"required|max:30",
@@ -74,6 +81,9 @@ class UserController extends Controller
             $user->password=$request->get('password',$user->password);
             $user->rol_id=$request->get('rol_id',$user->rol_id);
             $user->save();
+            $data=$user->toArray();
+            $user_id = Auth::id();
+             LogHistoryController::store($request, 'user', $data, $user_id);
             return response()->json(["msg"=>"User updated","data"=>$user,],202);
         }
         return response()->json([
@@ -82,11 +92,15 @@ class UserController extends Controller
         
     }
 
-    public function destroy(int $id)
+    public function destroy(Request $request,int $id)
     {
         $user=User::find($id);
         if($user){
+
+            $data=$user->toArray();
             $user->delete();
+            $user_id = Auth::id();
+            LogHistoryController::store($request, 'user', $data, $user_id);
             return response()->json(["msg"=>"User eliminado","data"=>$user,],202);
         }
         return response()->json([

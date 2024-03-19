@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Accesorio;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,20 +34,29 @@ class AccesoriosController extends Controller
       $accesorio->cantidad=$request->cantidad;
       $accesorio->categoria=$request->categoria;
       $accesorio->save();
+      $data=$accesorio->toArray();
+      $user_id = Auth::id();
+      LogHistoryController::store($request, 'accesorio', $data, $user_id);
       return response()->json(["msg"=>"Accesorio agregado correctamente"],200);
     }
 
-    public function index(){
+    public function index(Request $request){
+      $data=Accesorio::all()->toArray();
+      $user_id =Auth::id();
+      LogHistoryController::store($request, 'accesorio', $data, $user_id);
       return response()->json(["Msg" => "Accesorios encontrados","data :"=>Accesorio::all()],200);
     }
 
-    public function delete(int $id)
+    public function delete(Request $request,int $id)
     {
         $accesorio= Accesorio::find($id);
 
         if($accesorio)
         {
+          $data=$accesorio->toArray();
           $accesorio->delete();
+          $user_id = Auth::id();
+          LogHistoryController::store($request, 'accesorio', $data, $user_id);
           return response()->json(['accesorio eliminado'],200);
         }
   
@@ -79,6 +89,9 @@ class AccesoriosController extends Controller
           $accesorio->categoria=$request->get('categoria',$accesorio->categoria);
 
           $accesorio->save();
+          $data=$accesorio->toArray();
+          $user_id = Auth::id();
+          LogHistoryController::store($request, 'accesorio', $data, $user_id);
           return response()->json(["msg"=>"accesorio actualizado","data"=>$accesorio],202);
       }
       return response()->json([

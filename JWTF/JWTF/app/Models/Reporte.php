@@ -12,4 +12,5 @@ class Reporte extends Model
     public $timestamps = false;
     protected $fillable=['precio','fecha_entrega','ingreso'];
 
+
 }

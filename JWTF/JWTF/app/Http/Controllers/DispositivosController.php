@@ -6,12 +6,16 @@ use App\Models\Categoria;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Models\Dispositivo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class DispositivosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $data=Dispositivo::all()->toArray();
+      $user_id =Auth::id();
+      LogHistoryController::store($request, 'dispositivo', $data, $user_id);
         return response()->json(["Msg" => "Dispositivos encontrados","data :"=>Dispositivo::all()],200);
     }
 
@@ -38,6 +42,10 @@ class DispositivosController extends Controller
         $dispositivo->modelo=$request->modelo;
         $dispositivo->tipo_dispositivos=$request->tipo_dispositivos;
         $dispositivo->save();
+
+        $data=$dispositivo->toarray();
+        $user_id = Auth::id();
+        LogHistoryController::store($request, 'dispositivo', $data, $user_id);
         return response()->json(["Dispositivo agregado"],200);
     }
 
@@ -67,6 +75,9 @@ class DispositivosController extends Controller
             $dispositivo->modelo=$request->get('modelo',$dispositivo->marca);
             $dispositivo->tipo_dispositivos=$request->get('tipo_dispositivos',$dispositivo->tipo_dispositivos);
             $dispositivo->save();
+            $data=$dispositivo->toarray();
+            $user_id = Auth::id();
+            LogHistoryController::store($request, 'dispositivo', $data, $user_id);
             return response()->json(["msg"=>"categoria actualizada","data"=>$dispositivo],202);
         }
         return response()->json([
@@ -78,13 +89,18 @@ class DispositivosController extends Controller
 
 
 
-    public function delete(int $id)
+    public function delete(Request $request,int $id)
     {
       $dispositivo = Dispositivo::find($id);
 
       if($dispositivo)
       {
+        $data=$dispositivo->toArray();
+
+
         $dispositivo->delete();
+        $user_id = Auth::id();
+        LogHistoryController::store($request, 'dispositivo', $data, $user_id);
         return response()->json(['Usuario eliminado'],200);
       }
 

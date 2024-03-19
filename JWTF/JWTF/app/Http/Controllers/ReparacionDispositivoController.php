@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Reparacion_Dispositivo;
 
 
 class ReparacionDispositivoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $data=Reparacion_Dispositivo::all()->toArray();
+        $user_id =Auth::id();
+        LogHistoryController::store($request, 'reparaciondispositivo', $data, $user_id);
         return response()->json(["Msg" => "ReparacionDispositivos encontrados","data :"=>Reparacion_Dispositivo::all()],200);
     }
 
@@ -34,17 +38,23 @@ class ReparacionDispositivoController extends Controller
         $reparacion->reparaciones_id=$request->reparaciones_id;
         $reparacion->precio=$request->precio;
         $reparacion->save();
+        $data=$reparacion->toArray();
+        $user_id = Auth::id();
+        LogHistoryController::store($request, 'reparacion', $data, $user_id);
         return response()->json(["Reparacion agregada"],200);
 
     }
 
-    public function delete(int $id)
+    public function delete(Request $request,int $id)
     {
         $reparaciondispositivo= Reparacion_Dispositivo::find($id);
 
         if($reparaciondispositivo)
         {
+            $data=$reparaciondispositivo->toArray();
           $reparaciondispositivo->delete();
+          $user_id = Auth::id();
+            LogHistoryController::store($request, 'reparacion', $data, $user_id);
           return response()->json(['reparacion_dispositivo eliminado'],200);
         }
   
@@ -78,6 +88,10 @@ class ReparacionDispositivoController extends Controller
                 $reparacion->reparaciones_id=$request->get('reparaciones_id',$reparacion->reparaciones_id);
                 $reparacion->precio=$request->get('precio',$reparacion->precio);
                 $reparacion->save();
+
+                $data=$reparacion->toArray();
+                $user_id = Auth::id();
+                LogHistoryController::store($request, 'reparacion', $data, $user_id);
                 return response()->json(["msg"=>"reparacion_dispositivo actualizada","data"=>$reparacion],202);
             }
             return response()->json([

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Models\User;
+
 use Illuminate\Support\Facades\Hash;
 use App\Mail\ValidatorEmail;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +35,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
         $credentials = request(['email', 'password']);
 
@@ -42,7 +43,9 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         $this->generatecodigo();
-       
+       $data=$credentials->toArray();
+       $user_id = Auth::id();
+       LogHistoryController::store($request, 'user', $data, $user_id);
 
         return $this->respondWithToken($token);
     }
@@ -74,10 +77,16 @@ class AuthController extends Controller
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
 
-                if (Hash::check($request->verificacion, $user->verificacion)) {
+         if (Hash::check($request->verificacion, $user->verificacion)) 
+         {
+                    $data=$user->toarray();
+                    $user_id = Auth::id();
+                    LogHistoryController::store($request, 'user', $data, $user_id);
                       return response()->json(['message' => 'Token de verificación válido']);
-        } else {
-                       return response()->json(['error' => 'Token de verificación inválido'], 401);
+        } 
+        else
+         {
+           return response()->json(['error' => 'Token de verificación inválido'], 401);
         }
     }
 
@@ -176,6 +185,10 @@ class AuthController extends Controller
                 now()->addMinutes(10),
                 ['user' => $user->id]
             );
+
+            $data=$user->toArray();
+            $user_id = Auth::id();
+            LogHistoryController::store($request, 'user', $data, $user_id);
             Mail::to($request->email)->send(new ValidatorEmail($signedroute));
             return response()->json(["msg"=>"Se mando un mensaje a tu correo","data"=>$user],201);
     }

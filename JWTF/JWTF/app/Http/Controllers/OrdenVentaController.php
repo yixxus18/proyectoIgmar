@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Orden_Venta;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class OrdenVentaController extends Controller
@@ -32,20 +33,29 @@ class OrdenVentaController extends Controller
       $ordenventa->tipo_venta=$request->tipo_venta;
       
       $ordenventa->save();
+      $data=$ordenventa->toArray();
+      $user_id = Auth::id();
+      LogHistoryController::store($request, 'ordenventa', $data, $user_id);
       return response()->json(["msg"=>"orden:venta agregada correctamente"],200);
     }
 
-    public function index(){
+    public function index(Request $request){
+      $data=Orden_Venta::all()->toArray();
+      $user_id =Auth::id();
+      LogHistoryController::store($request, 'ordenventa', $data, $user_id);
       return response()->json(["Msg" => "Accesorios encontrados","data :"=>Orden_Venta::all()],200);
     }
 
-    public function delete(int $id)
+    public function delete(Request $request,int $id)
     {
         $ordenventa= Orden_Venta::find($id);
 
         if($ordenventa)
         {
+          $data=$ordenventa->toArray();
             $ordenventa->delete();
+            $user_id = Auth::id();
+            LogHistoryController::store($request, 'ordenventa', $data, $user_id);
           return response()->json(['orden_venta eliminada'],200);
         }
   
@@ -74,9 +84,10 @@ class OrdenVentaController extends Controller
         $ordenventa->estado=$request->get('estado', $ordenventa->estado);
         $ordenventa->user=$request->get('user', $ordenventa->user);
         $ordenventa->tipo_venta=$request->get('tipo_venta', $ordenventa->tipo_venta);
-       
-
         $ordenventa->save();
+        $data=$ordenventa->toArray();
+        $user_id = Auth::id();
+       LogHistoryController::store($request, 'ordenventa', $data, $user_id);
           return response()->json(["msg"=>"orden_venta actualizada","data"=> $ordenventa],202);
       }
       return response()->json([

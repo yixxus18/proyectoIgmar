@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reportes', function (Blueprint $table){
-             $table->id();
-             $table->integer('precio');
-             $table->date('fecha_entrega');
-             $table->foreignId('ingreso')->constrained('ingresos_reparaciones')->onDelete('cascade');
-
+        Schema::create('user_log', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('user_log');
     }
 };

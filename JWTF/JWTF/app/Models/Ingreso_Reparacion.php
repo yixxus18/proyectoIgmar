@@ -10,9 +10,7 @@ class Ingreso_Reparacion extends Model
     use HasFactory;
     protected $fillable=['nombre','dispositivo','reparacion','descripcion','fecha_ingreso','estatus'];
 
-    protected $table = 'ingresos_reparaciones';
 
-    public $timestamps = false;
     public function celular()
     {
     return $this->belongsTo(Dispositivo::class);

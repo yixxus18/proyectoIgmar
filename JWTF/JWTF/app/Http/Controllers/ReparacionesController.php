@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reparacion;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ReparacionesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+      $data=Reparacion::all()->toArray();
+      $user_id =Auth::id();
+      LogHistoryController::store($request, 'reparacion', $data, $user_id);
         return response()->json(["msg"=>"Reparaciones encontradas","data :" => Reparacion::all()],200);
     }
 
@@ -30,6 +33,9 @@ class ReparacionesController extends Controller
     $reparaciones = new Reparacion();
     $reparaciones->tipo_reparaciones=$request->tipo_reparaciones;
     $reparaciones->save();
+    $data=$reparaciones->toArray();
+    $user_id = Auth::id();
+    LogHistoryController::store($request, 'reparacion', $data, $user_id);
     return response()->json(["Reparacion agregada correctamente "],200);
     }
 
@@ -52,6 +58,9 @@ class ReparacionesController extends Controller
           {
             $reparacion->tipo_reparaciones=$request->get('tipo_reparaciones',$reparacion->tipo_reparaciones);
             $reparacion->save();
+            $data=$reparacion->toArray();
+            $user_id = Auth::id();
+            LogHistoryController::store($request, 'reparacion', $data, $user_id);
             return response()->json(["msg"=>"reparacion actualizada","data"=>$reparacion,],202);
           }
           return response()->json([
@@ -61,13 +70,16 @@ class ReparacionesController extends Controller
     }
 
 
-    public function delete(int $id)
+    public function delete(Request $request,int $id)
     {
         $reparacion = Reparacion::find($id);
 
         if($reparacion)
         {
+          $data=$reparacion->toarray();
           $reparacion->delete();
+          $user_id = Auth::id();
+          LogHistoryController::store($request, 'reparacion', $data, $user_id);
           return response()->json(["reparacion eliminada correctamente"],200);
         }
         return response()->json(["No se encontro la reparacion"],404);

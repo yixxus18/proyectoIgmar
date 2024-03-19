@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Reporte;
+
 use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 class ReportesController extends Controller
 {
-    public function index(){
+    public function index(Request $request)
+    {
+      $data=Reporte::all()->toArray();
+      $user_id =Auth::id();
+      LogHistoryController::store($request, 'reporte', $data, $user_id);
         return response()->json(["msg"=>"reportes encontrados",
         "data :"=>Reporte::all()],200);
     }
@@ -35,6 +43,9 @@ class ReportesController extends Controller
       $reporte->fecha_entrega=$request->fecha_entrega;
       $reporte->ingreso=$request->ingreso;
       $reporte->save();
+      $data=$reporte->toArray();
+    $user_id = Auth::id();
+    LogHistoryController::store($request, 'reporte', $data, $user_id);
       return response()->json(["msg"=>"reporte agregado correctamente"],200);
     }
 
@@ -62,6 +73,9 @@ class ReportesController extends Controller
         $reporte->ingreso=$request->get('ingreso',$reporte->ingreso);
 
         $reporte->save();
+        $data=$reporte->toArray();
+        $user_id = Auth::id();
+        LogHistoryController::store($request, 'reporte', $data, $user_id);
         return response()->json(["msg"=>"reporte actualizado","data"=>$reporte,],202);
       }
       return response()->json([
@@ -71,17 +85,24 @@ class ReportesController extends Controller
 
     }
 
-    public function delete(int $id){
+
+
+    public function delete(Request $request,int $id)
+    {
         $reporte = Reporte::find($id);
 
         if($reporte)
         {
+
+          $data=$reporte->toArray();
           $reporte->delete();
+          $user_id = Auth::id();
+          LogHistoryController::store($request, 'reporte', $data, $user_id);
           return response()->json(["reporte eliminado correctamente"],200);
         }
         return response()->json(["No se encontro el reporte"],404);
-
     }
-
+    
+   
 
 }
