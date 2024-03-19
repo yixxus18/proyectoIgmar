@@ -65,6 +65,12 @@ export const routes: Routes = [
           canActivate: [AuthGuard],
           data: {role: [1,2,3]}
         },
+        {
+          path: 'cita',
+          loadComponent: () => import('./components/cita/cita.component').then(m => m.CitaComponent),
+          canActivate: [AuthGuard],
+          data: {role: [1,2,3]}
+        },
 
       ]
     }    

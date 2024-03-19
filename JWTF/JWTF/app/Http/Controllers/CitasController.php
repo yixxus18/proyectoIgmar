@@ -19,8 +19,6 @@ class CitasController extends Controller
             "dispositivo"=>"required|exists:dispositivos,id",
             "usuario"=>"required|exists:users,id",
             "hora_cita"=>"required",
-
-            
         ]
       );
 

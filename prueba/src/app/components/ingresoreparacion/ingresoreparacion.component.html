@@ -1,0 +1,69 @@
+<div class="container">
+    <h1 class="my-4">Ingresos Reparaciones</h1>
+  
+    <!-- Formulario para agregar un nuevo ingreso -->
+    <form *ngIf="!edicionActiva; else editarFormulario" (submit)="agregarIngreso()" class="my-4">
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input type="text" [(ngModel)]="nuevoIngreso.descripcion" name="descripcion" id="descripcion" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="fechaIngreso">Fecha de Ingreso:</label>
+        <input type="date" [(ngModel)]="nuevoIngreso.fecha_ingreso" name="fechaIngreso" id="fechaIngreso" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="estatus">Estatus:</label>
+        <input type="text" [(ngModel)]="nuevoIngreso.estatus" name="estatus" id="estatus" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Agregar Ingreso</button>
+    </form>
+  
+    <!-- Mostrar mensaje de éxito o error -->
+    <div *ngIf="mensaje" class="alert alert-success">{{ mensaje }}</div>
+  
+    <!-- Mostrar la lista de ingresos -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Descripción</th>
+          <th>Fecha de Ingreso</th>
+          <th>Estatus</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ingreso of ingresos">
+          <td>{{ ingreso.descripcion }}</td>
+          <td>{{ ingreso.fecha_ingreso }}</td>
+          <td>{{ ingreso.estatus }}</td>
+          <td>
+            <button class="btn btn-primary mx-2" (click)="editarIngreso(ingreso)">Editar</button>
+            <button class="btn btn-danger" (click)="eliminarIngreso(ingreso.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Formulario para editar un ingreso -->
+    <ng-template #editarFormulario>
+        <form *ngIf="edicionActiva" (submit)="actualizarIngreso()" class="my-4">
+          <div class="form-group">
+            <label for="descripcionEdit">Descripción:</label>
+            <input type="text" [(ngModel)]="ingresoEditado?.descripcion" name="descripcionEdit" id="descripcionEdit" class="form-control" required>
+
+          </div>
+          <div class="form-group">
+            <label for="fechaIngresoEdit">Fecha de Ingreso:</label>
+            <input type="date" [(ngModel)]="ingresoEditado?.fecha_ingreso" name="fechaIngresoEdit" id="fechaIngresoEdit" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="estatusEdit">Estatus:</label>
+            <input type="text" [(ngModel)]="ingresoEditado?.estatus" name="estatusEdit" id="estatusEdit" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+          <button type="button" (click)="cancelarEdicion()" class="btn btn-secondary">Cancelar</button>
+        </form>
+      </ng-template>
+      
+  </div>
+  

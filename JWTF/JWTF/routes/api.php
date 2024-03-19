@@ -94,14 +94,11 @@ Route::group([
     Route::delete('eliminarordenventaA/{id}',[OrdenVentaAccesorioController::class,'delete']);
     Route::get('obtenerordenventaA',[OrdenVentaAccesorioController::class,'index']);
 
-
-    
     Route::post('storecita',[CitasController::class,'store']);
     Route::put('editarcita/{id}',[CitasController::class,'update']);
     Route::delete('eliminarcita/{id}',[CitasController::class,'delete']);
     Route::get('obtenercita',[CitasController::class,'index']);
 
-    
     Route::post('storeingreso',[IngresoReparacionesController::class,'store']);
     Route::put('editaringreso/{id}',[IngresoReparacionesController::class,'update']);
     Route::delete('eliminaringreso/{id}',[IngresoReparacionesController::class,'delete']);

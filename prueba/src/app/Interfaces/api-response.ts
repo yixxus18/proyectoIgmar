@@ -1,4 +1,5 @@
 
+import { Time } from "@angular/common";
 import { Accesorio } from "./accesorio";
 import { Device } from "./device";
 import { Reparacion } from "./reparacion";
@@ -55,4 +56,37 @@ export interface OrdenVentaAccesorios {
 export interface ApiResponse6 {
   Msg: string;
   "data :"?: OrdenVentaAccesorios[];
+}
+
+export interface Cita {	
+  id : number;
+  fecha_cita : Date;
+  motivo_cita: string;
+  estado_cita: string;
+  dispositivo: string;
+  usuario: number; 
+    // Otras propiedades...
+  hora_cita: string;
+  
+  
+}
+
+export interface ApiResponse7 {
+  Msg: string;
+  "data :"?: Cita[];
+}
+
+export interface IngresoReparacion {
+  id: number;
+  user: number;
+  dispositivo: number;
+  reparacion: number;
+  descripcion: string;
+  fecha_ingreso: Date;
+  estatus: string;
+}
+
+export interface ApiResponse8 {
+  Msg: string;
+  "data :"?: IngresoReparacion[];
 }
