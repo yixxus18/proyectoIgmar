@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\ReportesController;
 use App\Mail\ValidatorEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -103,6 +104,11 @@ Route::group([
     Route::put('editaringreso/{id}',[IngresoReparacionesController::class,'update']);
     Route::delete('eliminaringreso/{id}',[IngresoReparacionesController::class,'delete']);
     Route::get('obteneringreso',[IngresoReparacionesController::class,'index']);
+
+    Route::post('storereporte',[ReportesController::class,'store']);
+    Route::put('editarreporte/{id}',[ReportesController::class,'update']);
+    Route::delete('eliminarreporte/{id}',[ReportesController::class,'delete']);
+    Route::get('obtenerreporte',[ReportesController::class,'index']);
 });
 
 

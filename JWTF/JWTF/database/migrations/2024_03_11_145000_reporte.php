@@ -13,7 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('reportes', function (Blueprint $table){
+            $table->id();
+            $table->integer('precio');
+            $table->date('fecha_entrega');
+            $table->foreignId('ingreso')->constrained('ingresos_reparaciones')->onDelete('cascade');
+
+       });
+
     }
 
     /**

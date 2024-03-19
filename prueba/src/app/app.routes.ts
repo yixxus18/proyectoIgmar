@@ -71,6 +71,12 @@ export const routes: Routes = [
           canActivate: [AuthGuard],
           data: {role: [1,2,3]}
         },
+        {
+          path: 'ingreso',
+          loadComponent: () => import('./components/ingresoreparacion/ingresoreparacion.component').then(m => m.IngresoReparacionComponent),
+          canActivate: [AuthGuard],
+          data: {role: [1,2,3]}
+        },
 
       ]
     }    

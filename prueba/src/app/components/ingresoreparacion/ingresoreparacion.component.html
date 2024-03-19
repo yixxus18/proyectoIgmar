@@ -1,69 +1,112 @@
-<div class="container">
-    <h1 class="my-4">Ingresos Reparaciones</h1>
-  
-    <!-- Formulario para agregar un nuevo ingreso -->
-    <form *ngIf="!edicionActiva; else editarFormulario" (submit)="agregarIngreso()" class="my-4">
-      <div class="form-group">
-        <label for="descripcion">Descripción:</label>
-        <input type="text" [(ngModel)]="nuevoIngreso.descripcion" name="descripcion" id="descripcion" class="form-control" required>
-      </div>
-      <div class="form-group">
-        <label for="fechaIngreso">Fecha de Ingreso:</label>
-        <input type="date" [(ngModel)]="nuevoIngreso.fecha_ingreso" name="fechaIngreso" id="fechaIngreso" class="form-control" required>
-      </div>
-      <div class="form-group">
-        <label for="estatus">Estatus:</label>
-        <input type="text" [(ngModel)]="nuevoIngreso.estatus" name="estatus" id="estatus" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Agregar Ingreso</button>
-    </form>
-  
-    <!-- Mostrar mensaje de éxito o error -->
-    <div *ngIf="mensaje" class="alert alert-success">{{ mensaje }}</div>
-  
-    <!-- Mostrar la lista de ingresos -->
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Descripción</th>
-          <th>Fecha de Ingreso</th>
-          <th>Estatus</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ingreso of ingresos">
-          <td>{{ ingreso.descripcion }}</td>
-          <td>{{ ingreso.fecha_ingreso }}</td>
-          <td>{{ ingreso.estatus }}</td>
-          <td>
-            <button class="btn btn-primary mx-2" (click)="editarIngreso(ingreso)">Editar</button>
-            <button class="btn btn-danger" (click)="eliminarIngreso(ingreso.id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <!-- Formulario para editar un ingreso -->
-    <ng-template #editarFormulario>
-        <form *ngIf="edicionActiva" (submit)="actualizarIngreso()" class="my-4">
-          <div class="form-group">
-            <label for="descripcionEdit">Descripción:</label>
-            <input type="text" [(ngModel)]="ingresoEditado?.descripcion" name="descripcionEdit" id="descripcionEdit" class="form-control" required>
+<div class="container text-center">
+    <h1 class="my-4">Ingresos de Reparaciones</h1>
 
-          </div>
-          <div class="form-group">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Dispositivo</th>
+                <th>Reparación</th>
+                <th>Descripción</th>
+                <th>Fecha de Ingreso</th>
+                <th>Estatus</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ingreso of ingresos">
+                <td>{{ ingreso.id }}</td>
+                <td>{{ ingreso.user }}</td>
+                <td>{{ ingreso.dispositivo }}</td>
+                <td>{{ ingreso.reparacion }}</td>
+                <td>{{ ingreso.descripcion }}</td>
+                <td>{{ ingreso.fecha_ingreso }}</td>
+                <td>{{ ingreso.estatus }}</td>
+                <td>
+                    <button class="btn btn-primary mx-2" (click)="editarIngreso(ingreso)">Editar</button>
+                    <button class="btn btn-danger" (click)="eliminarIngreso(ingreso.id)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <form *ngIf="edicionActiva && ingresoEditado; else agregarEditarForm" (submit)="actualizarIngreso()" class="container">
+        <div class="form-group">
+            <label for="userEdit">Usuario:</label>
+            <select [(ngModel)]="ingresoEditado.user" name="userEdit" id="userEdit" class="form-control" required>
+                <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="dispositivoEdit">Dispositivo:</label>
+            <select [(ngModel)]="ingresoEditado.dispositivo" name="dispositivoEdit" id="dispositivoEdit" class="form-control" required>
+                <option *ngFor="let device of devices" [value]="device.id">{{ device.marca + " " + device.modelo }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="reparacionEdit">Reparación:</label>
+            <select [(ngModel)]="ingresoEditado.reparacion" name="reparacionEdit" id="reparacionEdit" class="form-control" required>
+                <option *ngFor="let reparacion of reparaciones" [value]="reparacion.id">{{ reparacion.tipo_reparaciones }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="descripcionEdit">Descripción:</label>
+            <input type="text" [(ngModel)]="ingresoEditado.descripcion" name="descripcionEdit" id="descripcionEdit" class="form-control" required>
+        </div>
+        <div class="form-group">
             <label for="fechaIngresoEdit">Fecha de Ingreso:</label>
-            <input type="date" [(ngModel)]="ingresoEditado?.fecha_ingreso" name="fechaIngresoEdit" id="fechaIngresoEdit" class="form-control" required>
-          </div>
-          <div class="form-group">
+            <input type="date" [(ngModel)]="ingresoEditado.fecha_ingreso" name="fechaIngresoEdit" id="fechaIngresoEdit" class="form-control" required>
+        </div>
+        <div class="form-group">
             <label for="estatusEdit">Estatus:</label>
-            <input type="text" [(ngModel)]="ingresoEditado?.estatus" name="estatusEdit" id="estatusEdit" class="form-control" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-          <button type="button" (click)="cancelarEdicion()" class="btn btn-secondary">Cancelar</button>
+            <input type="text" [(ngModel)]="ingresoEditado.estatus" name="estatusEdit" id="estatusEdit" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <button type="button" (click)="cancelarEdicion()" class="btn btn-secondary">Cancelar</button>
+    </form>
+    
+
+    <ng-template #agregarEditarForm>
+        <h2>Agregar/Editar Ingreso de Reparación</h2>
+        <form (submit)="agregarIngreso()" class="my-4">
+            <div class="form-group">
+                <label for="nuevaDescripcion">Descripción:</label>
+                <input type="text" [(ngModel)]="nuevoIngreso.descripcion" name="nuevaDescripcion" id="nuevaDescripcion" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="nuevaFechaIngreso">Fecha de Ingreso:</label>
+                <input type="date" [(ngModel)]="nuevoIngreso.fecha_ingreso" name="nuevaFechaIngreso" id="nuevaFechaIngreso" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="nuevoEstatus">Estatus:</label>
+                <input type="text" [(ngModel)]="nuevoIngreso.estatus" name="nuevoEstatus" id="nuevoEstatus" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="nuevoUsuario">Usuario:</label>
+                <select [(ngModel)]="nuevoIngreso.user" name="nuevoUsuario" id="nuevoUsuario" class="form-control" required>
+                    <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="nuevoDispositivo">Dispositivo:</label>
+                <select [(ngModel)]="nuevoIngreso.dispositivo" name="nuevoDispositivo" id="nuevoDispositivo" class="form-control" required>
+                    <option *ngFor="let device of devices" [value]="device.id">{{ device.marca + " " + device.modelo }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="nuevaReparacion">Reparación:</label>
+                <select [(ngModel)]="nuevoIngreso.reparacion" name="nuevaReparacion" id="nuevaReparacion" class="form-control" required>
+                    <option *ngFor="let reparacion of reparaciones" [value]="reparacion.id">{{ reparacion.tipo_reparaciones }}</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar Ingreso</button>
         </form>
-      </ng-template>
-      
-  </div>
+    </ng-template>
+
+    <div *ngIf="mensaje" class="alert alert-success">{{ mensaje }}</div>
+</div>
+
   

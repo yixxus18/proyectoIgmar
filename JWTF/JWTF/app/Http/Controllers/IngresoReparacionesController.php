@@ -14,7 +14,6 @@ class IngresoReparacionesController extends Controller
       $validate = Validator::make(
         $request->all(),[
             "user"=>"required|exists:users,id",
-            "dipositivo"=>"required|exists:dispositivos,id",
             "reparacion"=>"required|exists:reparaciones,id",
             "descripcion"=>"required|min:1",
             "fecha_ingreso"=>"required",
@@ -65,7 +64,6 @@ class IngresoReparacionesController extends Controller
         $validate = Validator::make(
             $request->all(),[
                 "user"=>"required|exists:users,id",
-                "dipositivo"=>"required|exists:dispositivos,id",
                 "reparacion"=>"required|exists:reparaciones,id",
                 "descripcion"=>"required|min:1",
                 "fecha_ingreso"=>"required",

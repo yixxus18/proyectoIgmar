@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiResponse8, IngresoReparacion } from '../../Interfaces/api-response';
+import { ApiResponse, ApiResponse2, ApiResponse8, IngresoReparacion } from '../../Interfaces/api-response';
 import { IngresoReparacionService } from '../../services/ingreso-reparacion.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { User } from '../../Interfaces/user-interface';
+import { UsersService } from '../../services/users.service';
+import { Device } from '../../Interfaces/device';
+import { DeviceService } from '../../services/device.service';
+import { Reparacion } from '../../Interfaces/reparacion';
+import { ReparacionService } from '../../services/reparacion.service';
 
 @Component({
   selector: 'app-ingresoreparacion',
@@ -25,19 +31,55 @@ export class IngresoReparacionComponent implements OnInit {
   };
   mensaje: string | null = null;
   edicionActiva = false; // Variable para controlar la edición activa
-  ingresoEditado: IngresoReparacion | null = null;
+  ingresoEditado: IngresoReparacion = {
+    id: 0,
+    user: 0,
+    dispositivo: 0,
+    reparacion: 0,
+    descripcion: '',
+    fecha_ingreso: new Date(),
+    estatus: ''
+  };
+  users: User[] | undefined;
+  devices: Device[] | undefined;
+  reparaciones: Reparacion[] | undefined;
+  
   ingresoEditadoBackup: IngresoReparacion | null = null;
 
-  constructor(private ingresoReparacionService: IngresoReparacionService) {}
+  constructor(private reparacionService: ReparacionService,private ingresoReparacionService: IngresoReparacionService, private userService: UsersService, private deviceService: DeviceService) {}
 
   ngOnInit(): void {
     this.loadIngresos();
+    this.loadUsers();
+    this.loadIngresos();
+    this.loadReparaciones();
+    this.loadDevices();
   }
 
   loadIngresos(): void {
     const token = localStorage.getItem('token') || '';
     this.ingresoReparacionService.getIngresos(token).subscribe((response: ApiResponse8) => {
       this.ingresos = response['data :'];
+    });
+  }
+
+  loadReparaciones(): void {
+    const token = localStorage.getItem('token') || '';
+    this.reparacionService.getReparaciones(token).subscribe((response: ApiResponse2) => {
+      this.reparaciones = response['data :'];
+    });
+  }
+  
+  loadDevices(): void {
+    const token = localStorage.getItem('token') || '';
+    this.deviceService.getDevices(token).subscribe((response: ApiResponse) => {// Añade esta línea
+      this.devices = response['data :'];
+    });
+  }
+
+  loadUsers(): void {
+    this.userService.getUsers().subscribe(response => {
+      this.users = response['data: '];
     });
   }
 
@@ -59,16 +101,16 @@ export class IngresoReparacionComponent implements OnInit {
       },
       error => {
         this.mensaje = 'Error al agregar ingreso. Por favor, inténtelo de nuevo.';
-        console.log(error);
       }
     );
   }
 
   editarIngreso(ingreso: IngresoReparacion): void {
-    this.ingresoEditadoBackup = { ...ingreso }; // Crear copia de respaldo
-    this.ingresoEditado = ingreso;
+    this.ingresoEditadoBackup = JSON.parse(JSON.stringify(ingreso)); // Copia profunda del ingreso
+    this.ingresoEditado = { ...ingreso }; // Copia superficial para edición
     this.edicionActiva = true; // Activar la edición
-  }
+}
+
 
   cancelarEdicion(): void {
     if (this.ingresoEditadoBackup) {
@@ -79,21 +121,22 @@ export class IngresoReparacionComponent implements OnInit {
   }
 
   actualizarIngreso(): void {
-    if (this.ingresoEditado) {
+    if (this.ingresoEditado) { // Verificar que ingresoEditado no sea null
       const token = localStorage.getItem('token') || '';
       this.ingresoReparacionService.updateIngreso(this.ingresoEditado, token).subscribe(
         response => {
           this.loadIngresos();
-          this.ingresoEditado = null;
-          this.ingresoEditadoBackup = null;
           this.mensaje = response.msg;
+          this.edicionActiva = false;
         },
         error => {
           this.mensaje = 'Error al actualizar ingreso. Por favor, inténtelo de nuevo.';
+          console.log(error);
         }
       );
     }
   }
+  
 
   eliminarIngreso(id: number): void {
     const token = localStorage.getItem('token') || '';
