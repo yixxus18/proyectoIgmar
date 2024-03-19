@@ -90,3 +90,15 @@ export interface ApiResponse8 {
   Msg: string;
   "data :"?: IngresoReparacion[];
 }
+
+export interface Reporte {
+  id: number;
+  precio: number;
+  fecha_entrega: Date;
+  ingreso: number;
+}
+
+export interface ApiResponse9 {
+  Msg: string;
+  "data :"?: Reporte[];
+}
